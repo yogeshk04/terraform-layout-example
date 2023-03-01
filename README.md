@@ -1,2 +1,5 @@
-# terrafrom-layout-example
-A production level terraform layout
+# A production level terraform layout
+
+- Run the *terraform apply* command in the environments folder
+
+
