@@ -1,31 +1,34 @@
-variable "profile" {default = "preprod"}
-variable "region" {default = "us-west-2"}
+variable "profile" { default = "preprod" }
+variable "region" { default = "us-west-2" }
 
 provider "aws" {
-  region                  = "${var.region}"
-  profile                 = "${var.profile}"
+  region  = var.region
+  profile = var.profile
 }
 
 terraform {
   backend "s3" {
-    profile = "admin"
-    bucket = "terraform-tfstate"
-    region = "us-west-2"
+    profile        = "admin"
+    bucket         = "terraform-tfstate"
+    region         = "us-west-2"
     dynamodb_table = "terraform-tflock"
-    encrypt = true
-    key = "preprod/terraform.tfstate"
+    encrypt        = true
+    key            = "preprod/terraform.tfstate"
   }
 }
 
-# Add your providers below
+module "eks" {
+  source             = "../../modules/aws/eks"
+  cluster_name       = var.cluster_name
+  vpc_id             = module.vpc.vpc_id
+  subnet_ids         = module.vpc.vpc_private_subnets.id
+  node_group_name    = var.node_group_name
+  node_instance_type = var.node_instance_type
+  desired_capacity   = var.desired_capacity
+  min_size           = var.min_size
+  max_size           = var.max_size
 
-module "prod-us-west-2" {
-  source = "../../providers/aws/preprod"
-  region = "us-west-2"
-}
-
-module "prod-us-east-2" {
-  source = "../../providers/aws/preprod"
-  region = "us-east-2"
-  profile = "${var.profile}"
+  depends_on = [
+    module.vpc
+  ]
 }
