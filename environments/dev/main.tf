@@ -4,6 +4,15 @@ terraform {
       source  = "hashicorp/aws"
       version = "4.57.1"
     }
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = ">=1.13.2"
+    }
+
+    helm = {
+      source  = "hashicorp/helm"
+      version = ">= 2.9.0"
+    }
   }
 }
 
@@ -14,3 +23,8 @@ provider "aws" {
   profile                  = "dev"
 }
 
+module "vpc" {
+  source    = "../../modules/aws/vpc"
+  infra_env = var.infra_env
+
+}
