@@ -1,9 +1,17 @@
-variable "profile" {default = "preprod"}
-variable "region" {default = "us-west-2"}
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "4.57.1"
+    }
+  }
+}
 
 provider "aws" {
-  region                  = "${var.region}"
-  profile                 = "${var.profile}"
+  region = "eu-central-1"
+  #shared_config_files      = ["$HOME/.aws/config"]
+  shared_credentials_files = ["$HOME/.aws/credentials"]
+  profile                  = "prod"
 }
 
 terraform {
