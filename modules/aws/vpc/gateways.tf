@@ -4,8 +4,8 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name        = "ars-cloud-community-${var.infa_env}-vpc"
-    Project     = "ARS-cloud-community"
+    Name        = "yoars-practice-${var.infra_env}-vpc"
+    Project     = "Cloud Practice"
     Environment = var.infra_env
     VPC         = aws_vpc.vpc.id
     ManagedBy   = "terraform"
@@ -18,12 +18,12 @@ resource "aws_eip" "nat" {
   vpc = true
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 
   tags = {
-    Name        = "ars-cloud-community-${var.infa_env}-eip"
-    Project     = "ARS-cloud-community"
+    Name        = "yoars-practice-${var.infra_env}-eip"
+    Project     = "Cloud Practice"
     Environment = var.infra_env
     VPC         = aws_vpc.vpc.id
     ManagedBy   = "terraform"
@@ -36,8 +36,8 @@ resource "aws_nat_gateway" "ngw" {
   subnet_id     = aws_subnet.public[element(keys(aws_subnet.public), 0)].id
 
   tags = {
-    Name        = "ars-cloud-community-${var.infa_env}-ngw"
-    Project     = "ARS-cloud-community"
+    Name        = "yoars-practice-${var.infra_env}-ngw"
+    Project     = "Cloud Practice"
     Environment = var.infra_env
     VPC         = aws_vpc.vpc.id
     ManagedBy   = "terraform"
@@ -52,8 +52,8 @@ resource "aws_route_table" "public" {
   vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name        = "ars-cloud-community-${var.infa_env}-public-rt"
-    Project     = "ARS-cloud-community"
+    Name        = "yoars-practice-${var.infra_env}-public-rt"
+    Project     = "Cloud Practice"
     Role        = "public"
     Environment = var.infra_env
     VPC         = aws_vpc.vpc.id
@@ -66,8 +66,8 @@ resource "aws_route_table" "private" {
   vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name        = "ars-cloud-community-${var.infa_env}-private-rt"
-    Project     = "ARS-cloud-community"
+    Name        = "yoars-practice-${var.infra_env}-private-rt"
+    Project     = "Cloud Practice"
     Role        = "private"
     Environment = var.infra_env
     VPC         = aws_vpc.vpc.id
@@ -100,6 +100,6 @@ resource "aws_route_table_association" "public" {
 # Private Route to Private Route Table for Private Subnets
 resource "aws_route_table_association" "private" {
   for_each       = aws_subnet.private
-  susubnet_id    = aws_subnet.private[each.key].id
+  subnet_id      = aws_subnet.private[each.key].id
   route_table_id = aws_route.private.id
 }
