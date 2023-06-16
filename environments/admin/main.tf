@@ -16,6 +16,14 @@ provider "aws" {
 
 terraform {
   backend "s3" {
+    bucket         = "key/dev/terraform.tfstate"
+    region         = "eu-central-1"
+    #dynamodb_table = "terrafromstate"
+  }
+}
+
+terraform {
+  backend "s3" {
     profile = "admin"
     bucket = "terraform-tfstate"
     region = "us-west-2"
