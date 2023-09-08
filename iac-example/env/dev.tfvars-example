@@ -20,3 +20,6 @@ private_app_subnet_az2_cidr = "10.0.9.0/24"
 
 private_data_subnet_az1_cidr = "10.0.10.0/24"
 private_data_subnet_az2_cidr = "10.0.11.0/24"
+
+# S3 bucker (Read s3 bucket naming rules)
+bucket_name = "s3hosting"

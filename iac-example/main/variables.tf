@@ -18,3 +18,6 @@ variable "private_app_subnet_az2_cidr" {}
 # Private data subnet cidr
 variable "private_data_subnet_az1_cidr" {}
 variable "private_data_subnet_az2_cidr" {}
+
+# S3 bucker
+variable "bucket_name" {}
