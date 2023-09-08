@@ -1,0 +1,22 @@
+# Common
+project_name = "raumbuchung"
+#createdBy    = "yogeshk04@gmail.com"
+
+# General
+#region      = "eu-central-1"
+region = "eu-north-1"
+#profile     = "development"
+environment = "dev"
+
+# VPC (number of 4,096 IPs)
+vpc_cidr = "10.0.0.0/20"
+
+# Subnet (number of 256 IPs)
+public_subnet_az1_cidr = "10.0.0.0/24"
+public_subnet_az2_cidr = "10.0.1.0/24"
+
+private_app_subnet_az1_cidr = "10.0.8.0/24"
+private_app_subnet_az2_cidr = "10.0.9.0/24"
+
+private_data_subnet_az1_cidr = "10.0.10.0/24"
+private_data_subnet_az2_cidr = "10.0.11.0/24"
