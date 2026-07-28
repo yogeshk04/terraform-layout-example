@@ -5,7 +5,7 @@ rename it, and start shipping infrastructure.
 
 ---
 
-## TL;DR — get running in 5 steps
+## TL;DR — get running in 5 steps (here's the short version — the minimum you need to know without reading the whole page.")
 
 > Assumes you have Terraform `>= 1.5.0`, the AWS CLI, and an AWS account.
 
