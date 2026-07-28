@@ -1,0 +1,4 @@
+project_name = "example"
+region       = "eu-central-1"
+profile      = "default"
+bucket_name  = "example-bucket-CHANGE-ME"

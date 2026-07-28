@@ -1,0 +1,5 @@
+project_name      = "myapp"
+region            = "eu-central-1"
+profile           = "default"
+state_bucket_name = "myapp-terraform-state-CHANGE-ME"
+lock_table_name   = "myapp-terraform-locks"

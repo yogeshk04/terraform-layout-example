@@ -1,45 +1,57 @@
-/*
-module "ec2" {
-  source = "../../modules/aws/ec2"
+########################################
+# dev environment
+#
+# Root module: composes reusable modules from ../../modules/.
+# Add or remove module blocks below as this environment grows.
+########################################
 
-  infra_env     = var.infra_env
-  infra_role    = "user"
-  instance_size = var.instance_size
-  instance_ami  = "ami-0e067cc8a2b58de59"
-  #instance_root_device_size = 12 # optional
+locals {
+  common_tags = {
+    Project     = var.project_name
+    Environment = var.environment
+  }
 }
-*/
+
+########################################
+# Network
+########################################
 
 module "vpc" {
-  source        = "../../modules/aws/vpc-2"
-  vpc_cidr      = "10.0.0.0/16"
-  public_cidrs  = ["10.0.1.0/24", "10.0.2.0/24"]
-  private_cidrs = ["10.0.3.0/24", "10.0.4.0/24"]
+  source = "../../modules/vpc"
+
+  project_name         = var.project_name
+  environment          = var.environment
+  cidr_block           = var.vpc_cidr
+  availability_zones   = var.availability_zones
+  public_subnet_cidrs  = var.public_subnet_cidrs
+  private_subnet_cidrs = var.private_subnet_cidrs
+  single_nat_gateway   = true
+
+  tags = local.common_tags
 }
 
-module "ec2" {
-  source         = "../../modules/aws/ec2-1"
-  my_public_key  = "ars-aws-key"
-  instance_type  = "t2.micro"
-  security_group = "${module.vpc.security_group}"
-  subnets        = "${module.vpc.public_subnets}"
-}
+########################################
+# Example: uncomment and configure to add more resources.
+########################################
 
-module "alb" {
-  source         = "../../modules/aws/alb"
-  vpc_id         = "${module.vpc.aws_vpc_id}"
-  instance1_id   = "${module.ec2.instance1_id}"
-  instance2_id   = "${module.ec2.instance2_id}"
-  subnet1        = "${module.vpc.subnet1}"
-  subnet2        = "${module.vpc.subnet2}"
-}
+# module "web" {
+#   source = "../../modules/ec2"
+#
+#   project_name           = var.project_name
+#   environment            = var.environment
+#   name                   = "web"
+#   ami_id                 = "ami-XXXXXXXXXXXXXXXXX"
+#   instance_type          = "t3.micro"
+#   subnet_id              = module.vpc.public_subnet_ids[0]
+#   vpc_security_group_ids = []  # supply a SG created elsewhere
+#   allocate_eip           = true
+#
+#   tags = local.common_tags
+# }
 
-module "autoscale" {
-  source         = "../../modules/aws/autoscale"
-  vpc_id         = "${module.vpc.aws_vpc_id}"
-  ami_id         = "${module.ec2.ami_id}"      
-  instance1_id   = "${module.ec2.instance1_id}"
-  instance2_id   = "${module.ec2.instance2_id}"
-  subnet1        = "${module.vpc.subnet1}"
-  subnet2        = "${module.vpc.subnet2}"
-}
+# module "app_bucket" {
+#   source = "../../modules/s3"
+#
+#   bucket_name = "${var.project_name}-${var.environment}-app"
+#   tags        = local.common_tags
+# }

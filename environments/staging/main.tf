@@ -1,8 +1,5 @@
 ########################################
-# prod environment
-#
-# Production defaults are stricter:
-#   - one NAT gateway per AZ (no single point of failure)
+# staging environment
 ########################################
 
 locals {
@@ -21,7 +18,7 @@ module "vpc" {
   availability_zones   = var.availability_zones
   public_subnet_cidrs  = var.public_subnet_cidrs
   private_subnet_cidrs = var.private_subnet_cidrs
-  single_nat_gateway   = false
+  single_nat_gateway   = true
 
   tags = local.common_tags
 }
