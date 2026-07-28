@@ -5,7 +5,9 @@ rename it, and start shipping infrastructure.
 
 ---
 
-## TL;DR — get running in 5 steps (here's the short version — the minimum you need to know without reading the whole page.")
+## TL;DR — get running in 5 steps
+
+*("TL;DR" = "too long; didn't read" — the short version.)*
 
 > Assumes you have Terraform `>= 1.5.0`, the AWS CLI, and an AWS account.
 
@@ -34,10 +36,42 @@ terraform apply
 
 ---
 
+## Shortcut: use the Makefile
+
+A `Makefile` at the repo root wraps the commands above so you never have
+to `cd` around or memorize flags. `ENV` picks the environment.
+
+```bash
+make help                     # list every target
+
+make bootstrap-apply          # one-time: create S3 bucket + lock table
+make bootstrap-output
+
+make init      ENV=dev
+make plan      ENV=dev
+make apply     ENV=dev
+make output    ENV=dev
+make destroy   ENV=dev
+
+make fmt                      # terraform fmt -recursive
+make check                    # fmt-check + validate every root module
+make clean                    # remove all .terraform/ caches
+```
+
+Pass extra Terraform flags with `ARGS`, e.g.
+`make plan ENV=prod ARGS="-out=prod.tfplan"`.
+
+> **Windows:** Make isn't installed by default. Use one of:
+> Git Bash (`choco install make`), WSL, or run the equivalent Terraform
+> commands manually (they're what each target expands to).
+
+---
+
 ## Layout
 
 ```
 .
+├── Makefile             # Shortcut commands (see "Using the Makefile").
 ├── bootstrap/          # One-time: creates the S3 state bucket + DynamoDB lock table.
 │                       # Uses LOCAL state.
 ├── modules/            # Reusable building blocks. No provider blocks inside.
